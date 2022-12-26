@@ -1,0 +1,23 @@
+<%-include("partials/header.ejs")-%>;
+<h1 style="text-align: center">Compose</h1>
+<form action="/compose" method="post">
+  <div class="form-group">
+    <label id="fm" style="margin-left: 380px; font-size: 25px">Title</label>
+    <input name="newTitle" class="form-control" id="fm" />
+    <label id="fm" style="margin-left: 380px; font-size: 25px">Add Blog</label>
+    <textarea
+      name="newBlog"
+      id="fm"
+      cols="40"
+      rows="5"
+      class="form-control"
+    ></textarea>
+  </div>
+  <div class="button">
+    <button class="btn btn-primary mt-5 text-center justify-content-center">
+      Publish
+    </button>
+  </div>
+</form>
+
+<%-include("partials/footer.ejs")-%>;

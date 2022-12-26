@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const { v4: uuid } = require("uuid");
+const _ = require("lodash");
 
 app.set("view engine", "ejs");
 
@@ -17,6 +19,71 @@ const contactContent =
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+
+//array that stores all the posts
+let posts = [];
+
+//root route
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+//blogs route
+app.get("/blogs", (req, res) => {
+  res.render("blogs", { homeStartingContent, posts });
+});
+
+//parameter routing to get specific blog
+
+app.get("/posts/:postId", (req, res) => {
+  // console.log("Testing");
+  const requestedTitle = _.lowerCase(req.params.postId);
+
+  posts.forEach(function (post) {
+    const storedTitle = _.lowerCase(post.title);
+
+    if (storedTitle === requestedTitle) {
+      res.render("show", {
+        title: post.title,
+        content: post.content,
+      });
+    }
+  });
+});
+
+
+
+app.get("/about", (req, res) => {
+  res.render("about", { aboutSection });
+});
+
+
+//contact us route
+
+app.get("/contact", (req, res) => {
+  res.render("contact", { contactContent });
+});
+
+//route to add blog
+
+app.get("/compose", (req, res) => {
+  res.render("compose");
+});
+
+//post request on change in compose route
+
+app.post("/compose", (req, res) => {
+  let { newTitle, newBlog } = req.body;
+  //object storing all the blogs
+  const post = {
+    id: uuid(),
+    title: newTitle,
+    content: newBlog,
+  };
+  posts.push(post);
+  //send user back to root route
+  res.redirect("/blogs");
+});
 
 app.listen(3000, () => {
   console.log("Server connected at port 3000");

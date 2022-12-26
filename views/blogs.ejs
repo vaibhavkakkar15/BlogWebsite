@@ -1,0 +1,13 @@
+<%-include("partials/header.ejs")-%>
+<div id="home-section">
+  <h1>Blogs</h1>
+  <p><%=homeStartingContent%></p>
+  <%for(let i of posts){%>
+  <h1><%=i.title%></h1>
+  <p>
+    <%=i.content.substring(0,100) + "...." %>
+    <a href="/posts/<%=i.title%>">Read More</a>
+  </p>
+  <%}%>
+</div>
+<%-include("partials/footer.ejs")-%>
